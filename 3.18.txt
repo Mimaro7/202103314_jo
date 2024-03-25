@@ -1,0 +1,181 @@
+4. grep
+- matching
+(grep the animals.txt
+ grep The animals.txt)
+-전체 텍스트 중에서 원하는 요소를 찾을때
+-대소문자 구분함
+-라인 전체를 출력한다
+Q. The가 있는 txt파일을 전체 조회하라: *->많이쓰임
+  - grep The *.txt
+
+(-v): 그거만 제외하고 출력 ex) grep -v The animals.txt
+
+Q. /usr/lib에 포함된 하위 디렉터리 개수 알아내기
+  - ls -l /usr/lib | cut -c1 | grep d
+
+5. sort
+-정렬,오름차순 (abcd...)
+- -r (reversed)
+- 숫자 정렬 (-n)
+ sort -n -r sample.txt
+ sort -nr sample.txt
+
+Q1. animals.txt 3번째 필드가 숫자 => 오름차순 정렬해서 출력하자
+ - cut -f3 animals.txt | sort -n
+Q2. 위 문제에서 최소값,최댓값 출력하기
+ - cut -f3 animals.txt | sort -n | head -n1
+
+Q3. /etc/passwd 디렉터리에서 사용자 이름 정렬하여 추출하기
+ - :로 구분된 필드 중 1번째 ==사용자
+ - //head /etc/passwd | cut -d: -f1 | sort (내 정답)
+ - 전체 출력하기(https//man7.org/linux/man-pages/man1/head.1.html)
+ - cut -d : -f 1 /etc/passwd | sort (교수님 정답)??
+Q4. 위 문제에서 사용자 중 root 있는지 확인하기(존재하는 라인만 출력)
+ - head /etc/passwd | sort |cut -d: -f1 | grep root
+ - Root , root ROOT
+ - root 'abcdroot'
+ - _root_ => -w  
+ - grep -w 하면 단어 전체가 일치하는지 확인 (loot를 찾을때 ablootcd 를 찾지않기위해)
+Q5./etc/passwd 디렉토리를 불러올때 ls로 부를때와 head로 부를떄가 다른 이유는?
+ - head -n100 
+ - ls 파일제목? 내용은 안보여줌
+
+#letters 내용 조회하기
+6. uniq
+ -중복된 문자열을 제거해서 보여주되, 인접한-(이게 중요함 인접한!!) 중복 문자열만
+ - 
+ -c 쓰니까 제거해서 몇개인지 알려준다
+Q. 성적표 (grades 파일)에서 가정 빈번하지 않은 등급부터 출력하기
+  -cut -f1 grades|sort |uniq -c | sort 
+    -uniq전에 sort 하는 이유는 인접한 중복 문자열을 제거하기 위해, sort로 중복
+     문자열을 모두 인접하게 만든다.
+
+  AAACCCCBBBAAA
+   * sort -> uniq
+     AAAAAAABBBBCC -> ABC
+   *uniq ->sort
+     ACBA->AABC
+  
+  ->sort -n
+    1 C\t
+    2 A
+  ->sort
+  1 C
+
+  *-d
+  -f
+  - rev c1
+  -c9
+  이거 뭔소리냠
+
+----------------------------------------------------------
+깃
+
+#1. 버전 관리
+ - 파일의 변화를 시간에 따라 저장했다가 나중에 특정 시점의 버전으로 다시 꺼내올 수 있는 시스템
+ - 협업할때 실수한거 복구가능
+ - 책 한번 확인
+
+ - 툴:깃
+
+#2. 깃
+ - 데이터 저장 방식 : 스냅샷
+ - 오프라인
+ - if 빈 -> 텍스트 입력 -> 빈 파일
+ - 키(key)-밸류(vlaue)
+    -키는 고유하다.(해시)
+    -밸류 (텍스트)
+ 
+ -깃 상태
+  -수정 : 파일이 변경된 상태
+  -커밋 :저장
+  -스테이지 : 스냅샷 찍어서 커밋할 준비가 된 상태
+
+  -수정
+  스테이징-> 커밋
+
+ -깃 커밋 순서:
+   상태 체크 -> (수정) -> 스테이징 -> 커밋
+
+ 1)버전 체크
+  git --version
+   *git -v --version (약간 줄인말?)
+
+ 2) 사용자 정보 설정하기
+    -name(git config --global user.name maro)
+    -email(it config --global user.email wdedcu1@naver.com)
+    -옵션 --global :전체 시스템에 영향을 준다
+      -프로젝트마다 다른 이름을 사용하고 싶을경우는 옵션을 제외함
+    -core.editor
+      - vi 빠져나올떄는 :q +enter
+    -git help <프로그램명>
+     -git help config
+  # 디렉터리 
+   -현재 디렉터리 :워킹 디렉토리 커런트 디렉토리
+   -우리가 말하는 "폴더"
+   -트리 구조를 가진
+    animasl/
+     ㄴ name.txt
+     ㄴ age.txt
+     mammals/
+      ㄴ cow.txt
+    reptitle/
+      -
+  - 하위 디렉터리(child0 -> animals >mammals
+    name.txt -> 파일
+  - 상위 디렑터리(parents) -mammals > animals
+  - 형제 디렉터리(sibling) - mammals, reptile
+
+  -/로 구분함
+    animals/mammals/cow.txt
+    <디렉터리/..../파일명>
+  -/ : 루트 디렉터리
+  -절대 경로 : 루트에서부터 시작
+  -상대 경로 : 현재 기준
+    ex)나의 현재 위치가 mammals이다 근데 위로가고싶다
+      1) 절대경로 : /....../mammals
+      2. 상대경로: 
+      ../. (점2개: 부모 디렉터리 점1개:현재)
+    -cd : change directory
+      예: cd ./mammals
+        cd ..
+
+  -pwd, cd
+  -.. .
+  -mkdir
+
+  Q.new_dir로 이동해서 디렉터리 "dir2" 만들어보기
+  -?????~/LovelyOliveDeeplearning$ cd new_dir
+bash: cd: new_dir: No such file or directory
+~/LovelyOliveDeeplearning$ mkdir new_dir
+~/LovelyOliveDeeplearning$ cd new_dir
+~/LovelyOliveDeeplearning/new_dir$ mkdir dir2
+~/LovelyOliveDeeplearning/new_dir$ 
+??????
+
+3) 깃 초기화
+ git init :.git 에 모든 변경사항(스냅샷)이 저장이 더ㅚㄴ다
+4) 상태 체크
+  git status
+
+  깃이 모르는 파일일 경우
+  untracked ->'add' ->tracked
+  add -> commit
+    -branch 정보 : main
+    -fe7df1e - 키 정보
+-    -init cimmit- 메시지
+  1file chaned 7 inserasdfaafdssd : 변경
+
+  -git status
+  -git add <파일명>
+  -git commit
+
+
+
+
+
+
+
+
+
+

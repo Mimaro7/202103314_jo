@@ -1,0 +1,66 @@
+지난시간 질문 정리
+-1.알파벳 중복없이 정렬해서 출력하는 코드 보내기
+-cut -f1 grades| sort |uniq
+2. 
+sort grades |sut -f1 |uniq -c |sort
+sort grades |sut -f1 |uniq -c |sort -n 의 차이점
+
+1,11,111,2   ->스트링 정렬
+1,2,11,111   -> 숫자정렬
+-n쓰면 숫?자로 바뀜
+
+3. git
+-여러 파일을 한꺼번에 스테이징하기
+
+git add .
+git stastus
+확인하면 전부 되는걸 볼수있음
+
+git commit -> txt
+git commit -m "your msg" ->모든파일 커밋?
+-매 수업에 커밋으로 파일을 저장하는 연습하기
+git commit -m "week 4"
+
+4. 문서 편집기
+-vi ,vim ,emacs , notepad++, ....
+
+-"vi"sual editor
+  -vim -vi improved
+-프롬프트에서 파일을 직접 편집할수 있게 해주는 툴
+-특징
+  - 화면 단위 편집기
+  - 유닉스 계열에서 가장 많이 사용됨
+  - 텍스트 편집 기능만 제공함
+  - "less"
+  - 모드 : 일반모드 <--> 입력모드 <-->명령모드
+    -ESC로 모드 전환
+    -명령모드 : 파일 저장, 덮어쓸건지, 빠져나갈건지 등등
+    => vi로 파일 열기 -> 입력모드 -> ESC -> 빠져나가기
+    
+    -입력모드:
+      -i:현 커서에 입력
+      -a:현 커서 한칸 뒤에서 입력
+      -o:한줄 추가 후 입력
+    ex)vi example 후에 i 눌러봄
+
+    -명령모드
+      :wq! + enter
+    ex) 파일 아무거나 열어서 수정하고 저장하고 나오기
+    
+    set -o vi =>안대는 사람은 한번쳐보기 또는
+    ($HOME/.bashrc 열어서 여기에 set -o vi)
+
+    나는 되니까 상관없지 않을까
+
+
+
+
+
+
+
+
+
+
+
+
+
