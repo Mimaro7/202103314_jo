@@ -1,3 +1,0 @@
-md5sum *.jpg | cut -c1-32 | sort
-
-md5sum *.jpg | cut -c1-32 | sort |uniq -c |sort -nr | grep -v"      1 "
