@@ -1,0 +1,309 @@
+1.집가서 집정리좀 하기
+2.회로이론 과제 끝내기
+3.공업수학 처음 2문제 풀고 뒷장 하나 풀어놓기
+4.AI정보이론 과제 확인하기
+
+1. 총 정 리
+## programs
+-<프로그램><옵션><인수>
+-ch
+-디렉토리, ......
+-ex) ls -l /etc/passwd
+
+1) date 
+2) who  #usrs/your_name
+3) echo 뒤에 나온걸 그냥 프린트 
+  -echo your name is $$$$name   달러4개쓴건 글색깔이 변해서 1개만써야해
+  -공백 무시
+4)ls
+  -조회chmod +x filename
+
+  - -l
+    - d :directory
+    - -
+    - .......
+  - -a:숨긴것도
+  - 멀티컬럼으로 stdout
+  - 인수 디렉토리
+  -인수로 파일명 쓰면 이름 그대로 반환
+
+5)cat +파일1,파일2..
+  -concatenate
+  -인수로 파일명
+  -파일 이어붙이기 가능 (컨텐츠 확장할때 사용한다.)
+
+6)wc
+  -라인, 단어 ,글자 수 세기
+  - -l -w -c
+  - 인수가 없으면 stdin으로 받는다
+
+7)cp
+  -copy fromA toB
+  -다른 디렉토리일 경우
+    -상대경로로 쓰는게 편함
+  -같은 파일명일 경우 이름 안 써도 됨
+    ex) cp b ./notes
+  -여러 파일 복사 가능
+    cp 1 2 3 4 5 6
+    1-5 from , 6 to
+  
+  Q. OSS애서 notes/b를 복사해서 가져오는 코드 작성하기
+    runner (pwd)
+    ㄴOSS
+      ㄴnotes
+        ㄴb
+
+    cp ./OSS/notes/b .  ->현재 디렉토리는 점으로 표현할수있다
+
+8) mv
+  -move
+  -mv fromA toB
+  -mv 1 2 3 4 5 "6"
+  -파일명 변경할때 많이 사용
+    mv a aa #a사라지고 aa
+  -디렉토리 A -> B
+    sample -> notes
+    //이건 복사가 아니라 이동이라는것을 주의
+
+***기존에 존재하던 파일명일 경우 덮어쓴다
+
+9) rm
+  -remove
+  -파일명,디렉토리
+    -디렉토리가 인수일때는 비어있어야함(empty)
+  - -r : 디렉토리
+  -여러개 지울수 있다
+    rm a b c d 
+    rm *.txt
+
+  -확인하고 지울것(큰일날수잇어용)
+
+10) rmdir
+    -empty
+
+## 디렉토리 관련 명령
+1)pwd
+  print working directory
+  current directory
+
+2) cd
+  - .. 빠져나올때
+  - . 
+  - cd  #home로감
+
+Q. notes -> runner로 한번에
+  cd ../..
+
+3)mkdir
+  -make directory
+
+4)rmdir
+
+5) ln
+  -a와 b를 항상 동기화하고 싶을때
+  -link files
+  -ln formA fromB
+  -a,b
+  -메모리 효율, 향상동기화됨
+  -다른 디렉토리에 동일한 파일을 위치시키고 싶을떄
+  -ls -l로 확인가능함
+  -파일 하나를 삭제해도 다른 파일은 삭제되지 않는다.
+
+##패턴매칭
+1. asterisk
+  -"*"
+  -zero or more
+    cat * #현재 디렉토리에 있는 모든 파일
+    chapter* #chaper로 싲가하는 모든 파일
+  Q.t가 들어있는 모든 파일
+    - *t&
+
+2. ?
+  -한 개 매칭
+    echo ? #글자 1개로 된 파일 전부
+    echo ?? #글자 2개로 된 파일 전부 bb(o)  bb.txt(x)-확장자명도 셈
+
+
+3. [, ]
+  -특정 글자 1개 매칭되는것 전부
+  [abcd] # or
+  [02468]#짝수
+  [0-9]#모든 숫자
+  [a-z]
+  Q. o를 제외한 모든 소문자
+    [a-n],[p-z]
+    [a-np-z]
+    [!o] #except 
+    
+4. escape letter
+  -공백 , \$, ......
+  -\
+  cat file_a file_b
+  cat hello\ world
+  '',""
+  -echo는 예외
+  Q. 'who are you?'라는 디렉토리를 생성하고 목록 조회하는 코드
+  mkdir 'who are you?'
+  mkdir who\ are\ you?
+  mkdir "who are you?"
+
+#리다이렉션
+  -입력 <, <<
+  -출력 >
+  -에러 2
+    -"" > cp_pattern1
+
+#파이프라인
+  - |
+  -표준 입출력을 이용하는 모든 프로그램은 파이프를 사용할수 있다.
+  - A | B | ......
+  -"필터" : 파이프라인을 사용할 수 있는, 입출력 값을 수정할 수 있는 프로그램(grep,cut)
+
+
+##
+  - ; -여러 명령 한줄에 쓸때
+  - date; pwd
+  -안익숙해요살려주세요
+
+  
+  -오래걸리는 명령 백그라운드로 보내기
+    -<명령>&
+    예 : cat bigdat >file1 &
+    -다른 프로그램 동시에 수행 가능
+    -stdin (조심해야함)
+
+
+  -ps
+    -프로세스 정보 나타냄
+    -PID: id
+    -TTY:터미널 정보
+    -time:구동 시간
+    -cmd :프로세스 이름
+
+
+##명령2
+1. cut
+  - cut <> 파일명
+  - -c, -f ,-d
+  - c알지?
+  - -f: tab 구분
+
+Q. 10번째 글자부터 끝까지
+  cut -c10- file
+
+  -d<구분자>
+    - -d:
+      cut -d: -f1 file #구분자없으면 기본은 탭
+
+
+2. paste
+  - cut 과 반대됨
+  -컬럼별로 데이터붙임
+  -디폴트는 탭
+  -paste grade letters   cat grades letters  실행해서 차이점 보기
+  -d<구분자> : 구분자 지정 (paste -d: grades letters)
+  -s : 같은 파일을 수정할 경우
+  ' ' -> \t
+    paste -s -d' ' file 
+
+3.grep
+  - grep <패턴> <디렉토리>
+  - 패턴에 매칭되는 문자열을 가진 라인 출력
+  - 매칭 없으면 아무것도 출력되지 않는다
+
+    grep Linux * #파일 내부의 텍스트
+    ....| grep Linux #출력에서 받은 입력값
+
+Q. 전체 파일에서 *를 패턴 가진 것 찾기
+  grep \* .
+  grep \* * ????????
+  grep '*' *
+
+  =>패턴은 ''를 사용하는게 좋다
+  [a-z]
+  ^, $
+  ^[A-z]*
+  *.txt$
+
+  -i :대소문자 구분 안함
+  -w :정확한 매칭만
+    the -> there(x)
+  -v : 반대, 포함 안되는거
+  -l : 해당 매칭이 있는 파일명
+  -n : 라인넘버 같이 출력
+*******중요함
+
+
+  Q. 해당 매칭이 있는 파일 개수
+  grep -l 'A' * |wc -l
+
+
+4. sort
+  -정렬
+  -라인별로, 오름차순 디폴트
+  -r 리뻐쑤
+  - -n:숫자로 인식
+    -셸은 모든 인수를 문자열로 인식한다
+    std : 1, 11, 2,3
+    int : 1,2,3 11
+  -특수문자, 다른 언어중에 특수기호 사용하는 문자 정렬 순서 주의할것
+  -' '#32 ,\   
+  -u : sort + uniq
+  -o :
+    -sort file1 > file1 (x)
+    -정렬된 결과물 같은 파일에 저장
+  
+
+5.uniq
+  -중복 삭제
+  -인접한 것만 고려한다
+  - -d: 결과 중 종복된 것 삭제
+  - -c: 중복된 횟수 카운트
+
+6.tr
+  -tr form_char to_char
+  -tr e x (e가 x로 바뀜)
+  -이건 표준 입력만 됨(파일수정은 무리고 파이프라인에서는 좋아요)
+  -tr e x< input
+  -stdin 만 가능함
+
+  Q.animals.txt 에서 소문자를 대문자로
+  tr '[a-z]' '[A-Z]' < animals.txt
+
+  -d: 삭제
+    tr -d the (the 를 삭제함)
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  살려줘요 이건 고문이야
+    
+
+
+

@@ -13,7 +13,7 @@ sort grades |sut -f1 |uniq -c |sort -n 의 차이점
 -여러 파일을 한꺼번에 스테이징하기
 
 git add .
-git stastus
+git status
 확인하면 전부 되는걸 볼수있음
 
 git commit -> txt
@@ -44,13 +44,151 @@ git commit -m "week 4"
     ex)vi example 후에 i 눌러봄
 
     -명령모드
-      :wq! + enter
+      :wq! + enter(강제종료)
     ex) 파일 아무거나 열어서 수정하고 저장하고 나오기
     
-    set -o vi =>안대는 사람은 한번쳐보기 또는
+    set -o vi =>안대는 사람은 한번만쳐보기 또는
     ($HOME/.bashrc 열어서 여기에 set -o vi)
 
     나는 되니까 상관없지 않을까
+
+  5. 패턴 매칭
+    1.img 2.img 3.img 
+
+
+  
+    - 프롬프트에서 셀, 프로그램이 작동한다.
+    grep(프롬프트) Linux sample.txt(셸)
+    -프롬프트는 우리가 명령을 실행하는곳
+    -셀은 사용자와 리눅스 운영체제를 연결해 주는 매개체
+    리눅스 - 셸 ,  프롬프트 - 사용자
+    -셜의 역할은 명령 실행, 와일드카드, 파이프라인 처리
+    
+    ex)grep Linux *.txt
+    *.txt -> sample.txt , a.txt .......
+    -셸이 패턴매칭을 처리하여 결과물을 프로그램에 보낸다
+      -head xxx | grep =>파이프라인도 셸이 처리
+
+    패턴매칭
+    -*
+      -zero or more
+      -*.txt: 앞에 머라머라 써져있고 txt확장자인걸 가져옴
+      - 0개 이상의 연속열과 일치하는
+
+    -?
+      -1개매칭
+      -내가 ch1 ch2 ch3....... ch100까지 있다면
+      - grep Linux ch? #한자리수만 매칭
+
+    - [ ]
+      -대괄호 안에 열거되어 있는 것 중 일치하는 문자열 1개 있을 때
+      -grep Linux ch[12345] # 12안됨   123안됨
+      -grep Linux ch[1-5]
+
+    Q1.짝수로 끝나는 모든 파일
+      grep Linux ch*[24680]    ---->왜 리눅스인가? ls를 써야하지않나???
+    Q2. 대문자로 시작하고 , 언더스코어 포함되어 있는 파이썬 파일 매칭
+      ls[A-Z]*_.py  #이건 .py앞에 언더바가 있는 경우만
+      grep Linux ch[A-Z]*_*.py
+    Q3. /etc 디렉터리 안에 파일 확장자가 .conf인 파일 목록 조회하기
+      ls /etc/*.conf (A)
+      ls -l /etc | grep ".conf"  (B)
+      A가 정답임
+
+    -매칭되는 파일이 없으면 에러
+      ls *.doc -> 에러
+    -디렉토리 경로, 파일명
+
+  6.변수 평가
+  - "평가" -변수를 리터럴 값으로 치환하여 값을 평가함
+    $VAR- 이미 저장된 변수
+    $var- 사용자가 지정하는 변수
+      ls $var
+        -> var = ./notes/w3.txt
+      ls ./notes/w3.txt
+
+    -$HOME - 루트 디렉터리
+    -$USER - 사용자
+    -echo
+    -printenv
+    
+    printenv HOME(USER)
+    echo $HOME
+    echo my direcctory is $home
+
+    - 변수 설정하기
+      name=lee
+      -공백 없어야함
+      -변수=값
+      -변수를 사용하려면 앞에 "$변수명"
+
+    Q. age라는 변수에 자신의 나이를 담고 "내 나이는 ...살이다 " 변수를 이용해서 출력
+      echo "my age is $age"
+
+
+    -내가 자주 사용하는 디렉토리가 있다
+    - dir1=$HOME/notes/chapter1
+      $dir1
+    -cd $dir1
+    이러면 편하다
+
+  7. 패턴과 변수
+    mammals
+      ㄴlizard.txt
+      ㄴsnake.txt
+      ㄴ.....txt
+    reptiles
+    
+    mv <form><to>
+    
+    #변수에 담아서 이동시키려면?
+    #패턴매칭으로 이동시키려면?
+
+    mv mammals reptitls (얘는 아님)
+
+    mv $home/mammals/*.txt $home/reptiles (틀림)
+
+    dir1=mammals/*.txt
+    mv dir1 reptiles   (얘는맞다)
+
+    
+
+    패턴매칭으로 해보면
+    mv mammals/*.txt reptiles
+
+
+  8. alias
+    -단축어를 별명으로 설정하기
+    - alias uniqc="uniq -c"
+     아무튼 커스텀 가능
+
+    - removeall="rm -r" 
+
+    -shadowing
+      alias grep="grep Linux *.txt"
+      alias ls="ls -l"
+
+    별명을 지우고싶다
+  -alias  
+  -unalias uniqc
+
+
+
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
