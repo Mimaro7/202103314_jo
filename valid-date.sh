@@ -62,5 +62,4 @@ if (( day < 1 || day > ${days_in_month[month_num-1]} )); then
   exit 1
 fi
 
-# 유효한 날짜 출력
 echo "$upper_month $day $year"
