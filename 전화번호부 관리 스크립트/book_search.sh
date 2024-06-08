@@ -2,7 +2,6 @@
 
 phonebook_file="phonebook.txt"
 
-
 if [ "$#" -eq 2 ]; then
     name="$1"
     phone_number="$2"
@@ -52,36 +51,28 @@ if [ "$#" -eq 2 ]; then
             ;;
     esac
 
-    
+    existing_entry=$(grep -i "^$name" "$phonebook_file")
+    if [[ $existing_entry ]]; then
+        existing_phone_number=$(echo "$existing_entry" | awk '{print $2}')
+        if [ "$phone_number" == "$existing_phone_number" ]; then
+            echo "동일한 전화번호가 이미 존재합니다."
+            exit 0
+        else
+            sed -i "/^$name/d" "$phonebook_file"
+        fi
+    fi
+
     if [ "${phone_number:0:2}" == "02" ]; then
         formatted_phone_number="${phone_number:0:2}-${phone_number:2:4}-${phone_number:6}"
     else
         formatted_phone_number="${phone_number:0:3}-${phone_number:3:4}-${phone_number:7}"
     fi
 
-
-
     new_entry="$name $formatted_phone_number $area_name"
 
     echo "$new_entry" >> "$phonebook_file"
     sort -o "$phonebook_file" "$phonebook_file"
     echo "전화번호가 성공적으로 추가되었습니다."
-    exit 0
-    
-elif [ "$#" -eq 1 ]; then
-    name="$1"
-
-    entry=$(grep -i "^$name" "$phonebook_file")
-
-    if [ -z "$entry" ]; then
-        echo "해당하는 이름의 전화번호를 찾을 수 없습니다."
-        exit 1
-    fi
-
-    phone_number=$(echo "$entry" | awk '{print $2}')
-    area_name=$(echo "$entry" | awk '{print $3}')
-
-    echo "검색된 전화번호: $phone_number, 지역: $area_name"
     exit 0
 else
     echo "사용법: $0 <이름> [전화번호]"
