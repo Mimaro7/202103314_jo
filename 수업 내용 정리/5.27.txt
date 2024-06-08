@@ -249,7 +249,7 @@ Q. $file이 존재하지 않으면(empty) /etc/passwd를 변수 $file에 할당�
 
 if [ !-e $file ]
 then
-  file=/etc/passwd
+  $file=/etc/passwd
 fi
 (-e대신에 -z도 쓰네)
 
